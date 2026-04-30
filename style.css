@@ -1,0 +1,32 @@
+body {
+    padding: 50px;
+    font-size: 16px;
+}
+
+h1 {
+    margin-bottom: 1rem;
+}
+
+ul {
+    margin-top: 1rem;
+}
+
+li {
+    display: flex;
+    padding: 1rem;
+    border: 1px solid black;
+    margin-bottom: 0.5rem;
+}
+
+.checkbox-task {
+    width: 1rem;
+    height: 1rem;
+    background-color: red;
+    margin-right: 0.5rem;
+}
+
+.button-delete {
+
+    background-color: green;
+    margin-left: auto;
+}
