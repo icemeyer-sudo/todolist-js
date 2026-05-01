@@ -19,7 +19,7 @@ Dans un second temps il faudra refaire le projet avec REACT, VUE et SOLIDJS pour
 ## Attention
 
 - On ne doit pas pouvoir ajouter une tâche vide
-- Si la liste est vide <ul> ne soit pas apparaitre dans le DOM
+- Si la liste est vide `ul` ne soit pas apparaitre dans le DOM
 - L'input doit être vidé à chaque ajout
 
 ## Pour aller plus loin
