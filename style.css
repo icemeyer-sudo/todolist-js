@@ -18,6 +18,11 @@ li {
     margin-bottom: 0.5rem;
 }
 
+.header-todo {
+    display: flex;
+    gap: 5px;
+}
+
 .checkbox-task {
     width: 1rem;
     height: 1rem;
@@ -26,7 +31,6 @@ li {
 }
 
 .button-delete {
-
     background-color: green;
     margin-left: auto;
 }
