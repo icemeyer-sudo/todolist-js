@@ -1,4 +1,4 @@
-/* // Permet de connaitre le nombre d'eventListener en cours -- Code à mettre dans la console
+/* Permet de connaitre le nombre d'eventListener en cours -- Code à mettre dans la console
 
     Array.from(document.querySelectorAll('*'))
         .reduce(function(pre, dom){
@@ -12,73 +12,167 @@
 const buttonAddTask = document.querySelector('#button');
 const newTask = document.querySelector('#input-task');
 const body = document.body;
-let id = 0;
+let id = 1;
+let tasks = [];
 
-buttonAddTask.addEventListener('click', handleClickAdd);
-function handleClickAdd(e) {
-    console.log('Ajout d\'une nouvelle tâche');
+buttonAddTask.addEventListener('click', (e) => {
     e.preventDefault();
     addTask(newTask);
-}
+});
 
 function addTask(newTask) {
     if (!newTask.value) { return }
     createList();
-    const ul = document.querySelector('#ul-task');
+
+    const ul = document.querySelector('#ul-task-in-progress');
+    const content = newTask.value[0].toUpperCase() + newTask.value.slice(1);
+
     const li = document.createElement('li');
     li.setAttribute('data-id', id)
-    const checkbox = document.createElement('button');
+
+    const checkbox = document.createElement('img');
     checkbox.setAttribute('class', 'checkbox-task');
-    const deleteButton = document.createElement('button');
+    checkbox.setAttribute('src', './public/images/check.svg');
+
+    const spanId = document.createElement('span');
+    spanId.setAttribute('class', 'span-id');
+    spanId.textContent = id;
+
+    const span = document.createElement('span');
+    span.setAttribute('class', 'span-task');
+    span.textContent = content;
+
+    const deleteButton = document.createElement('img');
+    deleteButton.setAttribute('src', './public/images/trash.svg');
     deleteButton.setAttribute('class', 'button-delete');
-    deleteButton.setAttribute('data-id', id);
     deleteButton.textContent = 'Supprimer la tâche';
-    li.textContent = newTask.value;
+
     ul.append(li);
-    li.prepend(checkbox);
+    li.append(checkbox);
+    li.append(spanId);
+    li.append(span);
     li.append(deleteButton);
-    id++;
+
+    task = {
+        id,
+        task: content,
+        checked: false
+    };
+
+    tasks.push(task);
     newTask.value = '';
+    id++;
 }
 
 function handleClickDelete(e) {
-    const ul = document.querySelector('#ul-task');
+    const divTask = document.querySelector('.div-task');
+    const divTaskInProgress = document.querySelector('.div-task-in-progress');
+    const divTaskDone = document.querySelector('.div-task-done');
+    const btnDeleteAll = document.querySelector('#btn-delete-all');
+
     deleteTask(e);
-    if (!ul.querySelector('li')) {
-        const btnDeleteAll = document.querySelector('#btn-delete-all');
-        ul.remove();
+
+    console.log(!divTaskInProgress.querySelector('li'))
+    console.log(!divTaskDone.querySelector('li'))
+
+    if ((!divTaskInProgress.querySelector('li')) && (!divTaskDone.querySelector('li'))) {
+        divTask.remove();
+    }
+    if (!divTaskInProgress.querySelector('li')) {
+        divTaskInProgress.remove();
+        btnDeleteAll.remove();
+    }
+    if (!divTaskDone.querySelector('li')) {
+        divTaskDone.remove();
         btnDeleteAll.remove();
     }
 }
 
 function deleteTask(e) {
-    const taskId = e.target.getAttribute('data-id');
-    const ul = document.querySelector('#ul-task');
-    const li = ul.querySelector(`li[data-id='${taskId}']`);
+    const li = e.target.parentNode;
     li.remove();
 }
 
 function createList() {
-    if (!document.querySelector('#ul-task')) {
-        createUl();
+    if (!document.querySelector('#ul-task-in-progress')) {
+        createUlTaskInProgress();
         createEventListener();
         createBtnDeleteAll();
     }
 }
 
-function createUl() {
+function createUlTaskInProgress() {
+    const divTodo = document.querySelector('#div-todo-list');
+
+    const divTask = document.createElement('div');
+    divTask.setAttribute('class', 'div-task');
+
+    const divTaskInProgress = document.createElement('div');
+    divTaskInProgress.setAttribute('class', 'div-task-in-progress');
+
+    const titleTaskInProgress = document.createElement('h2');
+    titleTaskInProgress.setAttribute('class', 'title-task-in-progress');
+    titleTaskInProgress.textContent = 'Tâches en cours';
+
     const ul = document.createElement('ul');
-    ul.setAttribute('id', 'ul-task');
-    body.appendChild(ul);
+    ul.setAttribute('id', 'ul-task-in-progress');
+
+    divTodo.appendChild(divTask);
+    divTask.appendChild(divTaskInProgress)
+    divTaskInProgress.appendChild(titleTaskInProgress);
+    divTaskInProgress.appendChild(ul);
 }
 
 function createEventListener() {
-    const ul = document.querySelector('#ul-task');
-    ul.addEventListener('click', (e) => {
+    const div = document.querySelector('#div-todo-list');
+    div.addEventListener('click', (e) => {
         if(e.target.classList.contains("button-delete")) {
             handleClickDelete(e);
         }
+        if(e.target.classList.contains("checkbox-task")) {
+            handleCheck(e);
+        }
     });
+}
+
+function handleCheck(e) {
+    const checkBox = e.target;
+    const task = e.target.parentNode;
+
+    if(task.getAttribute('class') === 'checked') {
+        const ul = document.querySelector('#ul-task-in-progress');
+        task.classList.remove('checked');
+        checkBox.removeAttribute('src');
+        checkBox.setAttribute('src', './public/images/check.svg');
+        ul.append(task);
+    } else {
+        task.setAttribute('class', 'checked');
+        checkBox.removeAttribute('src');
+        checkBox.setAttribute('src', './public/images/uncheck.svg');
+        const TitleTaskDone = document.querySelector('.title-task-done');
+
+        if(!TitleTaskDone) {
+            const divTask = document.querySelector('.div-task');
+
+            const divTaskInProgress = document.createElement('div');
+            divTaskInProgress.setAttribute('class', 'div-task-done');
+
+            const titleTaskDone = document.createElement('h2');
+            titleTaskDone.setAttribute('class', 'title-task-done');
+            titleTaskDone.textContent = 'Tâches terminées';
+
+            const ulTaskDone = document.createElement('ul');
+            ulTaskDone.setAttribute('class', 'ul-task-done');
+
+            divTask.append(divTaskInProgress);
+            divTaskInProgress.append(titleTaskDone);
+            titleTaskDone.after(ulTaskDone);
+        }
+
+        const titleTaskDone = document.querySelector('.title-task-done');
+        const ulTaskDone = document.querySelector('.ul-task-done');
+        ulTaskDone.append(task);
+    }
 }
 
 function createBtnDeleteAll() {
@@ -93,12 +187,23 @@ function createBtnDeleteAll() {
 }
 
 function handleDeleteAll() {
-    const ul = document.querySelector('#ul-task');
-    const btnDeleteAll = document.querySelector('#btn-delete-all');
+    const ulTaskInProgress = document.querySelector('#ul-task-in-progress'); // ul task in progress
+    const ulTaskDone = document.querySelector('.ul-task-done'); // ul task done
+    const titleTaskInProgress = document.querySelector('.title-task-in-progress'); // h2
+    const titleTaskDone = document.querySelector('.title-task-done'); // h2
+    const btnDeleteAll = document.querySelector('#btn-delete-all'); // btn
     // Supprimer les eventListeners ici n'est pas obligatoire
     // La suppression du DOM netoie automatiquement les eventListeners
-    ul.removeEventListener('click', handleClickDelete);
+    ulTaskInProgress.removeEventListener('click', handleClickDelete);
     btnDeleteAll.removeEventListener('click', handleDeleteAll);
-    ul.remove();
+    if(ulTaskInProgress) {
+        ulTaskInProgress.remove();
+        titleTaskInProgress.remove();
+    }
+    if(ulTaskDone) {
+        ulTaskDone.remove();
+        titleTaskDone.remove();
+    }
     btnDeleteAll.remove();
+
 }

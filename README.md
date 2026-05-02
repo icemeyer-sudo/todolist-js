@@ -5,16 +5,23 @@ Le projet devra être réalisé sans IA.
 Idéalement il faudra à terme être capable de réaliser le projet en 1h, sans aide extérieur (IA, documentation, cheat sheet).
 Dans un second temps il faudra refaire le projet avec REACT, VUE et SOLIDJS pour pouvoir comparer les approches.
 
-## Fonctionnalités
+## Étape 1
 
-- Bouton pour ajouter une tâche
+- Mettre un bouton pour ajouter une tâche
 - Les tâches s'affichent dans un liste à puce
+- La première lettre de chaque tâche doit être une majuscule
+- Les tâches doivent être stockées dans un tableau d'objets (id, valeur, check, date)
+
+## Étape 2
+
 - Bouton reset pour effacer toute la liste (seulement si une liste existe)
 - Les tâches peuvent être supprimées
 - Les tâches doivent pouvoir être cochées ou décochées
-- Les tâches doivent être stockées dans un tableau d'objets (id, valeur, check, date)
+- Créer une catégorie "tâches en cours" et une autres "tâches terminées"
+- Les catégories doivent être supprimées si elles sont vides
 - On doit pouvoir effectuer un tri dans les tâches (par ordre alphabétique ou par date)
 - Toutes les actions doivent être sauvegardées dans un fichier JSON
+- Faire une class pour l'ajout d'un élément
 
 ## Attention
 
